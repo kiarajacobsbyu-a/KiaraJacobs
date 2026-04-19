@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏢 Dunder Mifflin Paper Jump</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+        
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #2c3e50;
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        .header {
+            text-align: center;
+            padding: 30px 20px;
+            background: rgba(255,255,255,0.8);
+            backdrop-filter: blur(20px);
+            width: 100%;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            font-size: 2.5em;
+            font-weight: 300;
+            margin: 0 0 10px 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle {
+            font-size: 1.1em;
+            opacity: 0.8;
+            margin: 0;
+        }
+        
+        .game-info {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+            font-size: 1.1em;
+            font-weight: 400;
+        }
+        
+        .info-item {
+            background: rgba(255,255,255,0.6);
+            padding: 8px 16px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+        }
+        
+        canvas {
+            border: 3px solid rgba(255,255,255,0.8);
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+            display: block;
+            margin: 20px auto;
+            background: linear-gradient(to bottom, #f8f9ff 0%, #e8f0ff 70%, #d4e4ff 100%);
+        }
+        
+        .controls {
+            font-size: 1.2em;
+            margin: 25px 0;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+        
+        .nav-back {
+            position: absolute;
+            top: 25px;
+            left: 25px;
+            padding: 12px 24px;
+            background: rgba(255,255,255,0.9);
+            color: #2c3e50;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 500;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .nav-back:hover {
+            background: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        
+        .game-over {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255,255,255,0.95);
+            padding: 40px;
+            border-radius: 25px;
+            text-align: center;
+            border: 2px solid rgba(102,126,234,0.3);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            backdrop-filter: blur(20px);
+            display: none;
+            max-width: 400px;
+        }
+        
+        .game-over h2 {
+            font-size: 2.2em;
+            font-weight: 300;
+            margin: 0 0 15px 0;
+            color: #2c3e50;
+        }
+        
+        .game-over button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            font-size: 1.2em;
+            font-weight: 500;
+            border-radius: 25px;
+            cursor: pointer;
+            margin: 10px;
+            box-shadow: 0 8px 25px rgba(102,126,234,0.3);
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-bottom: 15px;
+        }
+        
+        .game-over button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(102,126,234,0.4);
+        }
+        
+        .office-btn {
+            background: linear-gradient(135deg, #00b894 0%, #00a085 100%);
+            box-shadow: 0 8px 25px rgba(0,184,148,0.3);
+        }
+        
+        .office-btn:hover {
+            box-shadow: 0 12px 35px rgba(0,184,148,0.4);
+        }
+        
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+    </style>
+</head>
+<body>
+    <a href="fromscratch.html" class="nav-back">← Back to Scratch Page</a>
+    
+    <div class="header">
+        <h1>Dunder Mifflin</h1>
+        <p class="subtitle">Paper Jump Challenge</p>
+        <div class="game-info">
+            <div class="info-item">Score: <span id="score">0</span></div>
+            <div class="info-item">Level: <span id="level">1</span></div>
+            <div class="info-item">Speed: <span id="speed">2.5</span></div>
+        </div>
+    </div>
+    <button onclick="window.location.href='fromscratch.html'" 
+        style="
+          position: fixed;
+          top: 10px;
+          right: 10px;
+          z-index: 9999;
+          padding: 10px 20px;
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          color: white;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+          font-weight: bold;
+        ">
+  ← Back to The Office Page
+</button> 
+    
+    <canvas id="gameCanvas" width="850" height="450"></canvas>
+    <div class="controls">SPACEBAR • CLICK • TAP to Jump ✨</div>
+    
+    <div class="game-over" id="gameOver">
+        <h2>Game Complete</h2>
+        <p>Final Score: <span id="finalScore">0</span></p>
+        <p>Level Reached: <span id="finalLevel">1</span></p>
+        
+        <div class="btn-group">
+            <button onclick="restartGame()">Play Again</button>
+            <a href="fromscratch.html" class="office-btn" style="text-decoration: none; display: block;">
+                <button>🏢 Go Back to the Office</button>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        let gameRunning = true;
+        let score = 0;
+        let level = 1;
+        let obstacleSpeed = 2.2;
+        let gravity = 0.45;
+        let jumpPower = -13.5;
+        
+        let michael = { x: 110, y: 310, vy: 0, width: 48, height: 68 };
+        let obstacles = [];
+        let obstacleTimer = 0;
+        
+        const scoreEl = document.getElementById('score');
+        const levelEl = document.getElementById('level');
+        const speedEl = document.getElementById('speed');
+        const gameOverEl = document.getElementById('gameOver');
+        const finalScoreEl = document.getElementById('finalScore');
+        const finalLevelEl = document.getElementById('finalLevel');
+
+        function updateLevel() {
+            const newLevel = Math.floor(score / 50) + 1;
+            if (newLevel > level) {
+                level = newLevel;
+                obstacleSpeed = Math.min(4.5, 2.2 + (level - 1) * 0.4);
+                levelEl.textContent = level;
+                speedEl.textContent = obstacleSpeed.toFixed(1);
+            }
+        }
+
+        // Smooth Michael Scott
+        function drawMichael(x, y) {
+            ctx.save();
+            ctx.shadowColor = 'rgba(0,0,0,0.2)';
+            ctx.shadowBlur = 8;
+            ctx.shadowOffsetY = 4;
+            
+            // Face
+            const faceGradient = ctx.createRadialGradient(x + 24, y + 28, 5, x + 24, y + 28, 20);
+            faceGradient.addColorStop(0, '#ffe4c4');
+            faceGradient.addColorStop(1, '#f5deb3');
+            ctx.fillStyle = faceGradient;
+            ctx.fillRect(x + 10, y + 12, 28, 26);
+            
+            // Hair
+            ctx.fillStyle = '#2c2c2c';
+            ctx.beginPath();
+            ctx.arc(x + 24, y + 10, 16, 0, Math.PI);
+            ctx.fill();
+            
+            // Eyes
+            ctx.fillStyle = 'white';
+            ctx.fillRect(x + 14, y + 18, 6, 6);
+            ctx.fillRect(x + 28, y + 18, 6, 6);
+            ctx.fillStyle = '#2c3e50';
+            ctx.fillRect(x + 16, y + 20, 3, 3);
+            ctx.fillRect(x + 30, y + 20, 3, 3);
+            
+            // Smile
+            ctx.strokeStyle = '#2c3e50';
+            ctx.lineWidth = 2;
+            ctx.lineCap = 'round';
+            ctx.beginPath();
+            ctx.arc(x + 22, y + 32, 6, 0, Math.PI);
+            ctx.stroke();
+            
+            // Shirt
+            const shirtGradient = ctx.createLinearGradient(x, y + 38, x + 48, y + 68);
+            shirtGradient.addColorStop(0, '#f8f9fa');
+            shirtGradient.addColorStop(1, '#e9ecef');
+            ctx.fillStyle = shirtGradient;
+            ctx.fillRect(x + 4, y + 38, 40, 28);
+            
+            // Tie
+            ctx.fillStyle = '#6c5ce7';
+            ctx.fillRect(x + 21, y + 40, 6, 20);
+            
+            // Pants
+            ctx.fillStyle = '#34495e';
+            ctx.fillRect(x + 8, y + 64, 32, 24);
+            
+            // Shoes
+            ctx.fillStyle = '#2c2c2c';
+            ctx.fillRect(x + 8, y + 84, 12, 8);
+            ctx.fillRect(x + 30, y + 84, 12, 8);
+            
+            ctx.restore();
+        }
+
+        // Enhanced paper stack with multiple sheets at different heights
+        function drawPaperStack(x, y, height, realistic = false) {
+            ctx.save();
+            ctx.shadowColor = 'rgba(0,0,0,0.15)';
+            ctx.shadowBlur = 6;
+            ctx.shadowOffsetX = 3;
+            ctx.shadowOffsetY = 3;
+            
+            // Draw multiple paper sheets at slightly different heights
+            for (let i = 0; i < 3; i++) {
+                const sheetY = y - (i * 2);
+                const sheetHeight = height - (i * 3);
+                const paperGradient = ctx.createLinearGradient(x, sheetY, x + 35, sheetY + sheetHeight);
+                paperGradient.addColorStop(0, '#fefefe');
+                paperGradient.addColorStop(1, '#f5f5f5');
+                
+                ctx.fillStyle = paperGradient;
+                ctx.fillRect(x, sheetY, 35, sheetHeight);
+                
+                ctx.shadowBlur = 0;
+                ctx.strokeStyle = '#e0e0e0';
+                ctx.lineWidth = 1;
+                ctx.strokeRect(x, sheetY, 35, sheetHeight);
+                
+                if (realistic) {
+                    ctx.strokeStyle = '#f0f0f0';
+                    ctx.lineWidth = 0.5;
+                    for (let j = 5; j < sheetHeight; j += 12) {
+                        ctx.beginPath();
+                        ctx.moveTo(x + 3, sheetY + j);
+                        ctx.lineTo(x + 32, sheetY + j);
+                        ctx.stroke();
+                    }
+                    ctx.fillStyle = '#6c5ce7';
+                    ctx.font = 'bold 9px Poppins';
+                    ctx.textAlign = 'center';
+                    ctx.fillText('Dunder Mifflin', x + 17.5, sheetY + 20);
+                } else {
+                    ctx.fillStyle = '#7f8c8d';
+                    ctx.font = 'bold 10px Poppins';
+                    ctx.textAlign = 'center';
+                    ctx.fillText('PAPER', x + 17.5, sheetY + 25);
+                }
+            }
+            
+            ctx.restore();
+        }
+
+        function update() {
+            if (!gameRunning) return;
+
+            michael.vy += gravity;
+            michael.y += michael.vy;
+            if (michael.y + michael.height > 375) {
+                michael.y = 375 - michael.height;
+                michael.vy = 0;
+            }
+
+            obstacleTimer++;
+            // Dynamic spacing based on level - gets more unpredictable!
+            const baseSpacing = Math.max(60, 120 - (level * 10));
+            if (obstacleTimer > baseSpacing + (Math.random() * 40 - 20)) { // ±20 variation
+                // Random height between 40-90 pixels (shorter = easier to jump over)
+                const randomHeight = 40 + Math.random() * 50;
+                obstacles.push({ 
+                    x: canvas.width, 
+                    y: 375 - randomHeight,
+                    height: randomHeight,
+                    width: 35
+                });
+                obstacleTimer = 0;
+            }
+
+            for (let i = obstacles.length - 1; i >= 0; i--) {
+                obstacles[i].x -= obstacleSpeed;
+                
+                // Enhanced collision detection for varying heights
+                if (obstacles[i].x < michael.x + michael.width - 8 &&
+                    obstacles[i].x + obstacles[i].width > michael.x + 8 &&
+                    michael.y + michael.height > obstacles[i].y) {
+                    gameOver();
+                    return;
+                }
+                
+                if (obstacles[i].x + obstacles[i].width < 0) {
+                    obstacles.splice(i, 1);
+                    score += Math.floor(12 + (level * 2)); // Bonus points for higher levels!
+                }
+            }
+
+            updateLevel();
+            scoreEl.textContent = score;
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Soothing office
+            const bgGradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            bgGradient.addColorStop(0, '#f8f9ff');
+            bgGradient.addColorStop(0.7, '#e8f0ff');
+            bgGradient.addColorStop(1, '#d4e4ff');
+            ctx.fillStyle = bgGradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Soft walls
+            ctx.fillStyle = 'rgba(232, 240, 255, 0.8)';
+            ctx.fillRect(0, 0, 35, canvas.height);
+            ctx.fillRect(canvas.width - 35, 0, 35, canvas.height);
+            
+            // Wood floor
+            const floorGradient = ctx.createLinearGradient(0, 375, 0, canvas.height);
+            floorGradient.addColorStop(0, '#e8d5b7');
+            floorGradient.addColorStop(1, '#d4c4a8');
+            ctx.fillStyle = floorGradient;
+            ctx.fillRect(0, 375, canvas.width, 75);
+            
+            // Floor texture
+            ctx.strokeStyle = 'rgba(212, 196, 168, 0.6)';
+            ctx.lineWidth = 1.5;
+            for (let i = 0; i < canvas.width; i += 35) {
+                ctx.beginPath();
+                ctx.moveTo(i, 375);
+                ctx.lineTo(i, canvas.height);
+                ctx.stroke();
+            }
+
+            drawMichael(michael.x, michael.y);
+            obstacles.forEach(obs => drawPaperStack(obs.x, obs.y, obs.height, level >= 2));
+        }
+
+        function jump() {
+            if (michael.y + michael.height >= 375) {
+                michael.vy = jumpPower;
+            }
+        }
+
+        function gameOver() {
+            gameRunning = false;
+            finalScoreEl.textContent = score;
+            finalLevelEl.textContent = level;
+            gameOverEl.style.display = 'block';
+        }
+
+        function restartGame() {
+            gameRunning = true;
+            score = 0;
+            level = 1;
+            obstacleSpeed = 2.2;
+            michael.y = 310;
+            michael.vy = 0;
+            obstacles = [];
+            obstacleTimer = 0;
+            gameOverEl.style.display = 'none';
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'Space') {
+                e.preventDefault();
+                jump();
+            }
+        });
+        canvas.addEventListener('click', jump);
+        canvas.addEventListener('touchstart', jump);
+
+        function gameLoop() {
+            update();
+            draw();
+            requestAnimationFrame(gameLoop);
+        }
+
+        gameLoop();
+    </script>
+</body>
+</html>
