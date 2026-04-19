@@ -1,0 +1,153 @@
+.background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: gray;
+    background-size: cover;
+    background-position: center;
+    z-index: -2;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+}
+
+.main-wrapper {
+    max-width: 1000px;
+    margin: 0 auto;
+    background: whitesmoke;
+    padding: 20px;
+}
+
+.mega-nav {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.nav-btn {
+    text-decoration: none;
+    padding: 10px 20px;
+    background: white;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+.mega-title {
+    font-family: 'Arial Black', sans-serif;
+    font-size: 3em;
+    text-align: center;
+    margin: 20px 0;
+}
+
+.mega-section {
+    border: 2px solid black;
+    border-radius: 5px;
+    margin: 30px 0;
+    padding: 20px;
+}
+
+#Romances,
+[ id="Romances" ] {
+    border: none !important;
+}
+
+
+.video-section {
+    margin: 30px 0;
+    padding: 20px;
+    border: 1px solid black;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.video-wrapper {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    margin: 20px 0;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.video-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.hero-image,
+img[alt*="Office"],
+img[alt*="Dwight"],
+img[alt*="Jim"],
+img[alt*="Pam"],
+img[alt*="Michael"],
+img[alt*="Stanley"] {
+    width: 400px;
+    height: 300px;
+    object-fit: cover;
+    display: block;
+    margin: 20px auto;
+    border: 2px solid black;
+    border-radius: 5px;
+}
+
+img[src*="Schrute"],
+img[src*="Halpert"],
+img[src*="Beesly"],
+img[src*="Scott"],
+img[src*="Hudson"] {
+    width: 250px;
+    height: 200px;
+    margin: 10px;
+    display: block;
+    border: 1px solid black;
+}
+
+.huge-list {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: left;
+    font-size: 16px;
+}
+
+.huge-list li {
+    margin: 15px 0;
+    padding: 15px;
+    border-left: 4px solid black;
+}
+
+
+.footer-center {
+    text-align: center;
+    padding: 20px;
+    border-top: 1px solid black;
+    margin-top: 30px;
+}
+<div class="tableau-wrapper" id="Romances">
+  <div id="tableauViz"></div>
+</div>
+
+<style>
+.tableau-wrapper {
+  width: 100%; 
+  height: 500px; 
+  overflow: hidden;
+}
+
+#Romances .tableauViz {
+  transform: scale(0.7); /* 40% size - adjust 0.3=30%, 0.5=50%, etc. */
+  transform-origin: top left;
+  width: 1200px; /* original viz width */
+  height: 800px;  /* original viz height */
+}
+</style>
